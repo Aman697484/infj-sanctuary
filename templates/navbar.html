@@ -1,0 +1,28 @@
+<div class="navbar">
+    <a href="/" class="logo">INFJ Sanctuary</a>
+
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/learn">Learn</a>
+        <a href="/community">Community</a>
+        <a href="/chatbot">AI Companion</a>
+
+{% if current_user.is_authenticated %}
+
+    <a href="/dashboard">Dashboard</a>
+    <a href="/community">Community</a>
+    <a href="/journal">Journal</a>
+    <a href="/mood">Mood</a>
+    <a href="/saved">Saved</a>
+    <a href="/library">Library</a>
+    <a href="/profile">Profile</a>
+    <a href="/logout">Logout</a>
+
+{% else %}
+
+    <a href="/login">Login</a>
+    <a href="/signup">Signup</a>
+
+{% endif %}
+    </div>
+</div>

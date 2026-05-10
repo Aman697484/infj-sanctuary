@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        body {
+            background:#202020;
+            margin:0;
+            font-family: Georgia, serif;
+            color:white;
+        }
+
+        .reader-wrapper {
+            max-width: 900px;
+            margin: auto;
+            padding: 35px 20px;
+        }
+
+        .back-link {
+            color:#c4b5fd;
+            text-decoration:none;
+            font-size:18px;
+        }
+
+        .book {
+            background:white;
+            color:black;
+            min-height:850px;
+            padding:80px 95px;
+            margin-top:25px;
+            box-shadow:0 0 30px rgba(0,0,0,0.5);
+        }
+
+        .title-page {
+            text-align:center;
+            margin-top:170px;
+        }
+
+        .title-page h1 {
+            font-size:38px;
+            margin-bottom:50px;
+        }
+
+        .title-page h2 {
+            font-size:34px;
+            margin:50px 0;
+        }
+
+        .volume-title {
+            text-align:center;
+            font-size:22px;
+            font-weight:bold;
+            margin-bottom:45px;
+        }
+
+        .chapter-number {
+            text-align:center;
+            font-size:21px;
+            font-weight:bold;
+            margin-bottom:15px;
+        }
+
+        .chapter-title {
+            text-align:center;
+            font-size:22px;
+            font-weight:bold;
+            margin-bottom:45px;
+        }
+
+        .paragraph {
+            font-size:22px;
+            line-height:1.25;
+            text-align:justify;
+            text-indent:35px;
+            margin-bottom:16px;
+        }
+
+        .page-number {
+            text-align:center;
+            margin-top:25px;
+            font-size:14px;
+            color:#444;
+        }
+
+        .reader-controls {
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-top:25px;
+        }
+
+        .reader-btn {
+            padding:14px 30px;
+            border:none;
+            border-radius:12px;
+            background:#7c3aed;
+            color:white;
+            font-size:16px;
+            cursor:pointer;
+        }
+
+        .reader-btn:disabled {
+            opacity:0.4;
+            cursor:not-allowed;
+        }
+
+        .progress-bar {
+            height:8px;
+            background:#334155;
+            border-radius:20px;
+            margin-top:25px;
+            overflow:hidden;
+        }
+
+        .progress-fill {
+            height:100%;
+            width:0%;
+            background:#8b5cf6;
+        }
+
+        #chapterSelect {
+            width:100%;
+            padding:14px;
+            margin-top:20px;
+            border-radius:10px;
+            font-size:16px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="reader-wrapper">
+
+    <a href="/library" class="back-link">← Back to Library</a>
+
+    <select id="chapterSelect" onchange="goToChapter()">
+        <option value="">Jump to Chapter</option>
+    </select>
+
+    <div class="book" id="book">
+        <div id="pageText"></div>
+        <div class="page-number" id="pageNumber"></div>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div class="reader-controls">
+        <button class="reader-btn" onclick="prevPage()" id="prevBtn">← Previous</button>
+        <span id="middlePage"></span>
+        <button class="reader-btn" onclick="nextPage()" id="nextBtn">Next →</button>
+    </div>
+
+</div>
+
+<script>
+    const fullText = {{ content | tojson }};
+
+    let rawPages = fullText.split(/=+\s*PAGE\s+\d+\s*=+/i);
+
+    let pages = rawPages
+        .map(page => page.trim())
+        .filter(page => page.length > 0);
+
+    let currentPage = 0;
+
+    const pageText = document.getElementById("pageText");
+    const pageNumber = document.getElementById("pageNumber");
+    const progressFill = document.getElementById("progressFill");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const middlePage = document.getElementById("middlePage");
+    const chapterSelect = document.getElementById("chapterSelect");
+
+    pages.forEach((page, index) => {
+        const match = page.match(/Chapter\s+\d+\./i);
+
+        if (match) {
+            const option = document.createElement("option");
+            option.value = index;
+            option.textContent = match[0] + " — Page " + (index + 1);
+            chapterSelect.appendChild(option);
+        }
+    });
+
+    function escapeHTML(text) {
+        return text
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;");
+    }
+
+    function formatPage(text) {
+        let lines = text
+            .split("\n")
+            .map(line => line.trim())
+            .filter(line => line.length > 0);
+
+        let html = "";
+        let bodyLines = [];
+
+        for (let i = 0; i < lines.length; i++) {
+            let line = lines[i];
+
+            if (/^VOLUME/i.test(line)) {
+                html += `<div class="volume-title">${escapeHTML(line)}</div>`;
+            }
+
+            else if (/^Chapter\s+\d+\./i.test(line)) {
+                html += `<div class="chapter-number">${escapeHTML(line)}</div>`;
+
+                if (lines[i + 1]) {
+                    html += `<div class="chapter-title">${escapeHTML(lines[i + 1])}</div>`;
+                    i++;
+                }
+            }
+
+            else {
+                bodyLines.push(line);
+            }
+        }
+
+        let paragraph = "";
+
+        bodyLines.forEach(line => {
+            paragraph += line + " ";
+
+            if (/[.!?”]$/.test(line)) {
+                html += `<p class="paragraph">${escapeHTML(paragraph.trim())}</p>`;
+                paragraph = "";
+            }
+        });
+
+        if (paragraph.trim().length > 0) {
+            html += `<p class="paragraph">${escapeHTML(paragraph.trim())}</p>`;
+        }
+
+        return html;
+    }
+
+    function renderPage() {
+        if (currentPage === 0) {
+            pageText.innerHTML = `
+                <div class="title-page">
+                    <h1>The Count of Monte Cristo</h1>
+                    <h2>By</h2>
+                    <h1>Alexandre Dumas</h1>
+                </div>
+            `;
+        } else {
+            pageText.innerHTML = formatPage(pages[currentPage]);
+        }
+
+        pageNumber.innerText =
+            "Page " + (currentPage + 1) + " of " + pages.length;
+
+        middlePage.innerText =
+            "Page " + (currentPage + 1) + " of " + pages.length;
+
+        progressFill.style.width =
+            ((currentPage + 1) / pages.length * 100) + "%";
+
+        prevBtn.disabled = currentPage === 0;
+        nextBtn.disabled = currentPage === pages.length - 1;
+    }
+
+    function nextPage() {
+        if (currentPage < pages.length - 1) {
+            currentPage++;
+            renderPage();
+        }
+    }
+
+    function prevPage() {
+        if (currentPage > 0) {
+            currentPage--;
+            renderPage();
+        }
+    }
+
+    function goToChapter() {
+        if (chapterSelect.value !== "") {
+            currentPage = parseInt(chapterSelect.value);
+            renderPage();
+        }
+    }
+
+    document.addEventListener("keydown", function(event) {
+        if (event.key === "ArrowRight") nextPage();
+        if (event.key === "ArrowLeft") prevPage();
+    });
+
+    renderPage();
+</script>
+
+</body>
+</html>

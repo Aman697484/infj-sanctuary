@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include 'navbar.html' %}
+
+<div class="page">
+
+    <h1>Edit Profile</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            value="{{ current_user.username }}"
+            required
+        >
+
+        <textarea
+            name="bio"
+            placeholder="Write about yourself..."
+        >{{ current_user.bio }}</textarea>
+
+        <input
+            type="text"
+            name="favorite_quote"
+            placeholder="Favorite quote"
+            value="{{ current_user.favorite_quote }}"
+        >
+
+        <input
+            type="text"
+            name="profile_picture"
+            placeholder="Or paste profile picture URL"
+            value="{{ current_user.profile_picture }}"
+        >
+
+        <p style="margin-top:20px; color:#cbd5e1;">
+            Upload profile picture from computer:
+        </p>
+
+        <input
+            type="file"
+            name="profile_picture_file"
+            accept="image/*"
+        >
+
+        <button class="btn primary" type="submit">
+            Save Changes
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

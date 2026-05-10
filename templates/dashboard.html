@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+{% include 'navbar.html' %}
+
+<div class="page">
+
+    <h1>Welcome, {{ current_user.username }}</h1>
+
+    <p>
+        This is your personal INFJ space. Track your thoughts,
+        explore yourself, and continue your growth journey.
+    </p>
+
+    <div class="cards">
+
+        <div class="card">
+            <h2>Your Posts</h2>
+            <p>{{ user_posts|length }} community posts written.</p>
+            <a href="/community" class="btn primary">Go to Community</a>
+        </div>
+
+        <div class="card">
+            <h2>Your Journal</h2>
+            <p>{{ user_journals|length }} private journal entries saved.</p>
+            <a href="/journal" class="btn primary">Open Journal</a>
+        </div>
+
+        <div class="card">
+            <h2>AI Companion</h2>
+            <p>Coming soon: a real AI guide for INFJ growth and self-understanding.</p>
+            <a href="/chatbot" class="btn primary">Open AI</a>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

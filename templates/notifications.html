@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Notifications</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+{% include 'navbar.html' %}
+
+<div class="page">
+
+    <h1>Notifications</h1>
+
+    {% if notifications %}
+
+        {% for notification in notifications %}
+
+            <div class="card"
+            style="width:90%; margin-bottom:20px;">
+
+                <p>{{ notification.message }}</p>
+
+                <p style="color:#64748b;">
+
+                    {{ notification.created_at.strftime('%d %b %Y, %I:%M %p') }}
+
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No notifications yet.</p>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>INFJ Sanctuary</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="home-body">
+
+<div class="app-shell">
+
+    <!-- SIDEBAR -->
+    <aside class="side-panel">
+
+        <div class="brand">
+            <div class="brand-icon">🪶</div>
+            <div>
+                <h1>INFJ</h1>
+                <p>SANCTUARY</p>
+                <span>Understand. Grow. Transform.</span>
+            </div>
+        </div>
+
+        <nav class="side-nav">
+
+            <a class="active" href="/">🏠 <span>Home</span></a>
+            <a href="/learn">🧠 <span>Deep Dive</span></a>
+            <a href="/journal">📓 <span>Journaling</span></a>
+            <a href="/mood">📊 <span>Mood Tracker</span></a>
+            <a href="/library">📚 <span>Library</span></a>
+            <a href="/chatbot">🤖 <span>AI Companion</span></a>
+            <a href="/community">👥 <span>Community</span></a>
+            <a href="/saved">🔖 <span>Saved Posts</span></a>
+            <a href="/profile">👤 <span>Account</span></a>
+
+        </nav>
+
+        <div class="sidebar-quote">
+            <p>
+                You are not too much.
+                You are just deeply aware
+                in a shallow world.
+            </p>
+        </div>
+
+    </aside>
+
+    <!-- MAIN CENTER -->
+    <main class="center-content">
+
+        <div class="top-bar">
+            <div></div>
+
+            <div class="top-icons">
+               <a href="/search" title="Search">🔍</a>
+
+               <a href="/notifications" title="Notifications">🔔</a>
+
+               {% if current_user.is_authenticated %}
+                  <a href="/profile">
+                     <img src="{{ current_user.profile_picture }}" class="top-avatar">
+                  </a>
+               {% endif %}
+           </div>
+        </div>
+
+        <!-- HERO -->
+        <section class="premium-hero">
+
+            <div class="hero-content">
+
+                <h1>
+                    The most deep, personalized
+                    and complete place for INFJs
+                </h1>
+
+                <p>
+                    Understand your mind. Heal your heart.
+                    Build your dream life.
+                </p>
+
+                <a href="/learn" class="premium-btn">
+                    Start Your Journey →
+                </a>
+
+                <div class="hero-tags">
+                    <span>Deep Knowledge</span>
+                    <span>AI Guidance</span>
+                    <span>Practical Tools</span>
+                    <span>Private & Safe</span>
+                    <span>For INFJs, By INFJs</span>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- EXPLORE -->
+        <section class="glass-section">
+
+            <div class="section-head">
+                <h2>Explore Your INFJ Universe</h2>
+                <a href="/learn">View All →</a>
+            </div>
+
+            <div class="universe-grid">
+
+                <a href="/learn" class="mini-card">
+                    <div class="mini-icon">🌌</div>
+                    <h3>INFJ Deep Dive</h3>
+                    <p>The most detailed personality guide you’ll ever find.</p>
+                    <span>Explore →</span>
+                </a>
+
+                <a href="/journal" class="mini-card">
+                    <div class="mini-icon">📖</div>
+                    <h3>Self Discovery</h3>
+                    <p>Tests, prompts, journals and tools to know yourself.</p>
+                    <span>Explore →</span>
+                </a>
+
+                <a href="/mood" class="mini-card">
+                    <div class="mini-icon">🌱</div>
+                    <h3>Growth Path</h3>
+                    <p>Step-by-step personal growth for INFJs.</p>
+                    <span>Explore →</span>
+                </a>
+
+                <a href="/community" class="mini-card">
+                    <div class="mini-icon">💜</div>
+                    <h3>Life Help</h3>
+                    <p>Relationships, sorrow, anxiety, overthinking and more.</p>
+                    <span>Explore →</span>
+                </a>
+
+                <a href="/library" class="mini-card">
+                    <div class="mini-icon">📚</div>
+                    <h3>Library</h3>
+                    <p>Books, articles and deep resources for INFJs.</p>
+                    <span>Explore →</span>
+                </a>
+
+                <a href="/chatbot" class="mini-card">
+                    <div class="mini-icon">✨</div>
+                    <h3>AI Companion</h3>
+                    <p>Talk, reflect, ask, learn and understand yourself.</p>
+                    <span>Explore →</span>
+                </a>
+
+            </div>
+
+        </section>
+
+        <!-- LOWER CARDS -->
+        <section class="dashboard-grid">
+
+            <div class="dashboard-card blueprint-card">
+                <h2>Your INFJ Blueprint</h2>
+
+                <div class="blueprint-circle">
+                    <span>Ni</span>
+                    <span>Fe</span>
+                    <span>Ti</span>
+                    <span>Se</span>
+                </div>
+
+                <ul>
+                    <li>Mind: Deep and visionary</li>
+                    <li>Heart: Empathetic and loyal</li>
+                    <li>Energy: Reserved but intense</li>
+                    <li>Nature: Idealistic and purposeful</li>
+                </ul>
+
+                <a href="/learn" class="small-btn">View Full Blueprint</a>
+            </div>
+
+            <div class="dashboard-card">
+                <h2>Recommended For You</h2>
+
+                <div class="tabs">
+                    <span>Books</span>
+                    <span>Articles</span>
+                    <span>Videos</span>
+                    <span>Podcasts</span>
+                </div>
+
+                <div class="book-list">
+                    <p><b>The Count of Monte Cristo</b><br>Revenge, patience, justice and rebirth.</p>
+                    <p><b>The Alchemist</b><br>A timeless book about following your personal legend.</p>
+                    <p><b>Man’s Search For Meaning</b><br>A deep and life-changing perspective on life.</p>
+                </div>
+
+                <a href="/library" class="small-btn">Explore Library</a>
+            </div>
+
+            <div class="dashboard-card focus-card">
+                <h2>Today’s Focus</h2>
+
+                <p>✅ Write in your journal</p>
+                <p>○ 20 min of deep reading</p>
+                <p>○ Connect with nature</p>
+                <p>○ Learn something new</p>
+                <p>○ Do one kind act</p>
+
+                <div class="focus-progress">
+                    <div></div>
+                </div>
+
+                <small>2 / 5 Completed</small>
+            </div>
+
+        </section>
+
+        <!-- TOOLS -->
+        <section class="glass-section tools-section">
+
+            <h2>Popular Tools</h2>
+
+            <div class="tools-row">
+
+                <a href="/learn">🧾 INFJ Personality Test</a>
+                <a href="/journal">🧠 Shadow Work Guide</a>
+                <a href="/mood">💙 Overthinking Relief Tools</a>
+                <a href="/community">💗 Emotional Healing Guide</a>
+                <a href="/journal">✍️ Writing Improvement</a>
+                <a href="/dashboard">📋 Habits for INFJs</a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- RIGHT PANEL -->
+    <aside class="right-panel-premium">
+
+        <div class="ai-card">
+
+            <div class="card-title-row">
+                <h2>🤖 AI Companion</h2>
+                <span>BETA</span>
+            </div>
+
+            <p>Your INFJ AI friend. Ask anything.</p>
+
+            <div class="chat-preview">
+                Hey, I’m here for you. Ask me anything about life,
+                personality, books, writing, or just talk.
+            </div>
+
+            <div class="prompt-chip">Suggest books for INFJs</div>
+            <div class="prompt-chip">How can I become a better writer?</div>
+            <div class="prompt-chip">I feel overwhelmed. Help me.</div>
+            <div class="prompt-chip">How can I understand myself better?</div>
+
+            <a href="/chatbot" class="premium-btn full-btn">
+                Start Chat ✈
+            </a>
+
+        </div>
+
+        <div class="reflection-card">
+            <h2>Daily Reflection</h2>
+
+            <p class="big-quote">
+                “The privilege of a lifetime is to become who you truly are.”
+            </p>
+
+            <span>- Carl Jung</span>
+
+            <a href="/journal" class="small-btn">
+                Write in Journal 📖
+            </a>
+        </div>
+
+        <div class="community-card">
+            <h2>Community</h2>
+
+            <p>
+                A safe space for INFJs to connect and grow.
+            </p>
+
+            <a href="/community" class="small-btn">
+                Join Community
+            </a>
+        </div>
+
+    </aside>
+
+</div>
+
+</body>
+</html>

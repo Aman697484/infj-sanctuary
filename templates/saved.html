@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Saved Posts</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+{% include 'navbar.html' %}
+
+<div class="page">
+
+    <h1>Saved Posts</h1>
+
+    {% if bookmarks %}
+
+        {% for bookmark in bookmarks %}
+
+            <div class="card"
+            style="width:90%; margin-bottom:25px;">
+
+                <img
+                    src="{{ bookmark.post.author.profile_picture }}"
+                    style="
+                        width:60px;
+                        height:60px;
+                        border-radius:50%;
+                        object-fit:cover;
+                        margin-bottom:10px;
+                        border:2px solid #7c3aed;
+                    "
+                >
+
+                <h2>{{ bookmark.post.title }}</h2>
+
+                <p style="color:#c084fc;">
+
+                    {% if bookmark.post.is_anonymous %}
+                        Posted by Anonymous INFJ
+                    {% else %}
+                        Posted by {{ bookmark.post.author.username }}
+                    {% endif %}
+
+                </p>
+
+                <p style="color:#94a3b8;">
+                    Category: {{ bookmark.post.category }}
+                </p>
+
+                <p>{{ bookmark.post.content }}</p>
+
+                <a href="/remove_saved/{{ bookmark.id }}"
+                class="btn secondary">
+                    Remove Saved Post
+                </a>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No saved posts yet.</p>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mood Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+{% include 'navbar.html' %}
+
+<div class="page">
+
+    <h1>INFJ Mood Tracker</h1>
+
+    <p>Track your emotional patterns, energy, and inner world.</p>
+
+    <form method="POST">
+
+        <select name="mood" required>
+            <option value="Calm">Calm</option>
+            <option value="Happy">Happy</option>
+            <option value="Sad">Sad</option>
+            <option value="Anxious">Anxious</option>
+            <option value="Overthinking">Overthinking</option>
+            <option value="Inspired">Inspired</option>
+            <option value="Burned Out">Burned Out</option>
+        </select>
+
+        <select name="energy" required>
+            <option value="High">High Energy</option>
+            <option value="Medium">Medium Energy</option>
+            <option value="Low">Low Energy</option>
+        </select>
+
+        <textarea name="note" placeholder="What affected your mood today?"></textarea>
+
+        <button class="btn primary" type="submit">Save Mood</button>
+
+    </form>
+
+    <hr style="margin:50px 0; border-color:#334155;">
+
+    <h2>Your Mood History</h2>
+
+    {% if moods %}
+        {% for item in moods %}
+            <div class="card" style="width:90%; margin-bottom:20px;">
+                <h2>{{ item.mood }}</h2>
+                <p>Energy: {{ item.energy }}</p>
+                <p>{{ item.note }}</p>
+                <p style="color:#64748b;">
+                   {{ item.created_at.strftime('%d %b %Y, %I:%M %p') }}
+                </p>
+                <a href="/delete_mood/{{ item.id }}" class="btn secondary">
+                   Delete
+                </a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No moods tracked yet.</p>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

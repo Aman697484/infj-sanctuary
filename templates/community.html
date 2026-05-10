@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>INFJ Community</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include 'navbar.html' %}
+
+<div class="page">
+
+    <h1>INFJ Community</h1>
+
+    <p>
+        Share your problems, emotions, thoughts,
+        struggles and experiences with other INFJs.
+    </p>
+
+    <!-- CREATE POST -->
+
+    <form method="POST">
+
+        <input
+            type="text"
+            name="title"
+            placeholder="Post title..."
+            required
+        >
+
+        <select name="category" required>
+
+            <option value="General">General</option>
+            <option value="Relationships">Relationships</option>
+            <option value="Overthinking">Overthinking</option>
+            <option value="Career / Goals">Career / Goals</option>
+            <option value="Family">Family</option>
+            <option value="Loneliness">Loneliness</option>
+            <option value="Creativity">Creativity</option>
+
+        </select>
+
+        <textarea
+            name="content"
+            placeholder="Write your thoughts..."
+            required
+        ></textarea>
+
+        <label style="display:block; margin-top:20px;">
+
+            <input
+                type="checkbox"
+                name="anonymous"
+                style="width:auto;"
+            >
+
+            Post anonymously
+
+        </label>
+
+        <button class="btn primary"
+        type="submit">
+            Post
+        </button>
+
+    </form>
+
+    <hr style="margin:50px 0; border-color:#334155;">
+
+    <!-- SEARCH + FILTER -->
+
+    <form method="GET"
+    style="margin-bottom:30px;">
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search posts..."
+            value="{{ search or '' }}"
+        >
+
+        <select name="category">
+
+            <option value="All">All Categories</option>
+            <option value="General">General</option>
+            <option value="Relationships">Relationships</option>
+            <option value="Overthinking">Overthinking</option>
+            <option value="Career / Goals">Career / Goals</option>
+            <option value="Family">Family</option>
+            <option value="Loneliness">Loneliness</option>
+            <option value="Creativity">Creativity</option>
+
+        </select>
+
+        <button class="btn primary"
+        type="submit">
+            Filter
+        </button>
+
+    </form>
+
+    <!-- POSTS -->
+
+    {% if posts %}
+
+        {% for post in posts %}
+
+            <div class="card"
+            style="width:90%; margin-bottom:35px;">
+
+                <!-- AVATAR -->
+
+                <img
+                    src="{{ post.author.profile_picture }}"
+                    style="
+                        width:60px;
+                        height:60px;
+                        border-radius:50%;
+                        object-fit:cover;
+                        margin-bottom:10px;
+                        border:2px solid #7c3aed;
+                    "
+                >
+
+                <!-- TITLE -->
+
+                <h2>{{ post.title }}</h2>
+
+                <!-- USERNAME -->
+
+                <p style="color:#c084fc;">
+
+                    {% if post.is_anonymous %}
+                        Posted by Anonymous INFJ
+                    {% else %}
+                        Posted by {{ post.author.username }}
+                    {% endif %}
+
+                </p>
+
+                <!-- CATEGORY -->
+
+                <p style="color:#94a3b8;">
+                    Category: {{ post.category }}
+                </p>
+
+                <!-- DATE -->
+
+                <p style="color:#64748b;">
+                    {{ post.created_at.strftime('%d %b %Y, %I:%M %p') }}
+                </p>
+
+                <!-- CONTENT -->
+
+                <p>{{ post.content }}</p>
+
+                <!-- ACTION BUTTONS -->
+
+                <a href="/like_post/{{ post.id }}"
+                class="btn primary">
+                    Support 💜 {{ post.likes }}
+                </a>
+
+                <a href="/save_post/{{ post.id }}"
+                class="btn secondary">
+                    Save Post
+                </a>
+
+                <a href="/delete_post/{{ post.id }}"
+                class="btn secondary">
+                    Delete Post
+                </a>
+
+                <hr style="border-color:#334155;">
+
+                <!-- COMMENTS -->
+
+                <h3>Suggestions / Comments</h3>
+
+                {% if post.comments %}
+
+                    {% for comment in post.comments %}
+
+                        <div style="
+                            background:#1e293b;
+                            padding:15px;
+                            border-radius:15px;
+                            margin-bottom:10px;
+                        ">
+
+                            <p>{{ comment.content }}</p>
+
+                            <p style="color:#64748b;">
+                                {{ comment.created_at.strftime('%d %b %Y, %I:%M %p') }}
+                            </p>
+
+                            <a href="/delete_comment/{{ comment.id }}"
+                            style="color:#f87171;">
+                                Delete Comment
+                            </a>
+
+                        </div>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <p>No suggestions yet.</p>
+
+                {% endif %}
+
+                <!-- COMMENT FORM -->
+
+                <form method="POST"
+                action="/comment/{{ post.id }}">
+
+                    <textarea
+                        name="comment"
+                        placeholder="Write a thoughtful suggestion..."
+                        required
+                        style="min-height:80px;"
+                    ></textarea>
+
+                    <button class="btn primary"
+                    type="submit">
+                        Comment
+                    </button>
+
+                </form>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No posts yet.</p>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

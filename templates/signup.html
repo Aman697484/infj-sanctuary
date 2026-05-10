@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Signup</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+{% include 'navbar.html' %}
+
+<div class="page">
+    <h1>Create Account</h1>
+
+    <form method="POST">
+        <input type="text" name="username" placeholder="Choose username" required>
+        <input type="password" name="password" placeholder="Choose password" required>
+
+        <button class="btn primary" type="submit">Signup</button>
+    </form>
+</div>
+
+</body>
+</html>

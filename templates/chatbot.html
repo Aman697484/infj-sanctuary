@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>INFJ AI Companion</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+{% include 'navbar.html' %}
+
+<div class="page">
+
+    <h1>INFJ AI Companion</h1>
+
+    <p>
+        Ask anything about INFJ personality, emotions, books,
+        writing, reading, relationships, goals, or self-growth.
+    </p>
+
+    <form method="POST">
+
+        <input 
+            type="text"
+            name="message"
+            placeholder="Ask your INFJ AI companion..."
+            required
+        >
+
+        <button class="btn primary" type="submit">
+            Ask
+        </button>
+
+    </form>
+
+    {% if reply %}
+        <div class="card" style="width:90%; margin-top:40px;">
+            <h2>AI Companion</h2>
+            <p>{{ reply }}</p>
+        </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

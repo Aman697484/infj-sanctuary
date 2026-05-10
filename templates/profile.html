@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include 'navbar.html' %}
+
+<div class="page">
+
+    <h1>{{ current_user.username }}'s Profile</h1>
+
+    <img
+    src="{{ current_user.profile_picture }}"
+    style="
+        width:150px;
+        height:150px;
+        border-radius:50%;
+        object-fit:cover;
+        margin-bottom:20px;
+        border:4px solid #7c3aed;
+    "
+    >
+
+    <p style="color:#cbd5e1;">
+      {{ current_user.bio }}
+    </p>
+
+    <p style="color:#c084fc; font-style:italic;">
+      "{{ current_user.favorite_quote }}"
+    </p>
+
+    <a href="/edit-profile"
+    class="btn primary">
+      Edit Profile
+    </a>
+
+    <div class="cards">
+
+        <div class="card">
+            <h2>Community Posts</h2>
+
+            <p>
+                {{ user_posts|length }} posts written
+            </p>
+        </div>
+
+        <div class="card">
+            <h2>Journal Entries</h2>
+
+            <p>
+                {{ user_journals|length }} entries saved
+            </p>
+        </div>
+
+    </div>
+
+    <br><br>
+
+    <h2>Your Community Posts</h2>
+
+    {% if user_posts %}
+
+        {% for post in user_posts %}
+
+            <div class="card"
+            style="width:90%; margin-bottom:25px;">
+
+                <h2>{{ post.title }}</h2>
+
+                <p>{{ post.content }}</p>
+
+                <p style="color:#94a3b8;">
+                    Category: {{ post.category }}
+                </p>
+
+                <p style="color:#c084fc;">
+                    Supports: {{ post.likes }}
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>You have not created any posts yet.</p>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

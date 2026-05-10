@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>INFJ Journal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+{% include 'navbar.html' %}
+
+<div class="page">
+
+    <h1>INFJ Journal</h1>
+
+    <p>
+        Write your private thoughts, dreams, emotions,
+        reflections, and growth notes.
+    </p>
+
+    <form method="POST">
+
+        <textarea 
+            name="content"
+            placeholder="What is your inner world saying today?"
+            required
+        ></textarea>
+
+        <button class="btn primary" type="submit">
+            Save Journal
+        </button>
+
+    </form>
+
+    <hr style="margin:50px 0; border-color:#334155;">
+
+    <h2>Your Journal Entries</h2>
+
+    {% if entries %}
+
+        {% for entry in entries %}
+            <div class="card" style="width:90%; margin-bottom:25px;">
+                <p>{{ entry.content }}<a href="/delete_journal/{{ entry.id }}" class="btn secondary">
+    Delete Entry
+</a></p>
+            </div>
+        {% endfor %}
+
+    {% else %}
+
+        <p>No journal entries yet.</p>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>
